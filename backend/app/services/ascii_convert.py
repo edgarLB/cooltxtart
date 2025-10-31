@@ -1,24 +1,34 @@
-import cv2
 
 characters = ' _.,-=+:;cba!?0123456789$W#@Ñ'
 
-filePath = '../temp/test.jpg'
-img = cv2.imread(filePath, cv2.IMREAD_UNCHANGED)
-img = cv2.resize(img, (0, 0), fx=0.1, fy=0.1)
+def make_ascii(img, mask):
+    ascii_text = ''
+    no_bg_ascii_text = ''
 
-asciiText = ''
+    condition = mask > 0.75
 
+    for row in range(img.shape[0]):
+        for col in range(img.shape[1]):
+            b, g, r = img[row][col]
 
-for row in range(img.shape[0]):
-    for col in range(img.shape[1]):
-        b, g, r = img[row][col]
-
-        # determine character based on the luminance of the pixel
-        luminance = (0.299 * r) + (0.587 * g) + (0.114 * b)
-        charIndex = int(luminance / 255 * (len(characters) - 1))
-
-        asciiText += characters[charIndex]
-    asciiText += '\n'
+            # determine character based on the luminance of the pixel
+            luminance = (0.299 * r) + (0.587 * g) + (0.114 * b)
 
 
-# print(asciiText)
+            cha_index = int(luminance / 255 * (len(characters) - 1))
+
+            ascii_char = characters[cha_index]
+
+            ascii_text += ascii_char
+
+            if condition[row, col]:
+                no_bg_ascii_text += ascii_char
+            else:
+                no_bg_ascii_text += ' '
+
+        ascii_text += '\n'
+        no_bg_ascii_text += '\n'
+
+
+    # print(ascii_text)
+    return ascii_text, no_bg_ascii_text
