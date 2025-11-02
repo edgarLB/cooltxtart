@@ -62,9 +62,14 @@ def make_images(img, ascii_text_full, ascii_text_no_bg, output_name):
         background.paste(base_img, (0,0), base_img)
 
 
-        # glow 2
+        # glow 1
         glow_img.putalpha(250)
         glow_img = glow_img.filter(ImageFilter.GaussianBlur(radius=6))
+        background = ImageChops.add(background, glow_img)
+
+        # glow 2
+        glow_img.putalpha(100)
+        glow_img = glow_img.filter(ImageFilter.GaussianBlur(radius=15))
         background = ImageChops.add(background, glow_img)
 
         return background
