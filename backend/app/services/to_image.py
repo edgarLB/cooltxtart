@@ -14,14 +14,14 @@ def make_images(img, ascii_text_full, ascii_text_no_bg, output_name):
     lines_no_bg = ascii_text_no_bg.split('\n')
 
 
-    maxWidth = max(len(line) for line in lines_full)
-    imageWidth = math.floor(maxWidth * fontSize * spacing_factor)
-    imageHeight = math.floor(len(lines_full) * fontSize * spacing_factor)
+    max_width = max(len(line) for line in lines_full)
+    image_width = math.floor(max_width * fontSize * spacing_factor)
+    image_height = math.floor(len(lines_full) * fontSize * spacing_factor)
 
-    result_full = Image.new('RGBA', (imageWidth, imageHeight), color=(0, 0, 0, 0))
-    result_no_bg = Image.new('RGBA', (imageWidth, imageHeight), color=(0, 0, 0, 0))
-    glow_full = Image.new('RGBA', (imageWidth, imageHeight), (0, 0, 0, 0))
-    glow_no_bg = Image.new('RGBA', (imageWidth, imageHeight), (0, 0, 0, 0))
+    result_full = Image.new('RGBA', (image_width, image_height), color=(0, 0, 0, 0))
+    result_no_bg = Image.new('RGBA', (image_width, image_height), color=(0, 0, 0, 0))
+    glow_full = Image.new('RGBA', (image_width, image_height), (0, 0, 0, 0))
+    glow_no_bg = Image.new('RGBA', (image_width, image_height), (0, 0, 0, 0))
 
     draw_full = ImageDraw.Draw(result_full)
     draw_no_bg = ImageDraw.Draw(result_no_bg)

@@ -1,14 +1,26 @@
 import cv2
+import numpy as np
+from fastapi import FastAPI, UploadFile, File
+import uuid
+
 
 from app.services.ascii_convert import make_ascii
-from services.subject_mask import make_mask
-from services.to_image import make_images
+from app.services.subject_mask import make_mask
+from app.services.to_image import make_images
 
-def main():
+app = FastAPI()
 
-    file_path = 'temp/test.jpg'
-    img = cv2.imread(file_path, cv2.IMREAD_COLOR)
+@app.post('/convert',
+          summary='convert uploaded image to ASCII art')
+async def convert(file: UploadFile = File(...)):
+    job_id = str(uuid.uuid4())
 
+    content = await file.read()
+    np_arr = np.array(bytearray(content), dtype="uint8")
+    img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+
+
+    # resize
     max_size = 75
     longer_side = max(img.shape[0], img.shape[1])
     scale = 0
@@ -24,17 +36,15 @@ def main():
     mask = make_mask(img)
 
     # ascii
-    text, noBG_text = make_ascii(img, mask)
+    text, no_bg_text = make_ascii(img, mask)
 
     # image
     make_images(img = img,
-               ascii_text_full= text,
-               ascii_text_no_bg = noBG_text,
-               output_name = "test"
-               )
+                ascii_text_full= text,
+                ascii_text_no_bg = no_bg_text,
+                output_name = job_id
+                )
+
+    return {'status': 'complete'}
 
 
-
-
-if __name__ == '__main__':
-    main()
