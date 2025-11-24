@@ -1,10 +1,24 @@
 import tempImageFull from './assets/full.png'
 import tempImageNoBG from './assets/no_bg.png'
-import {useState} from "react";
+import {useRef, useState} from "react";
 
 function App() {
 
     const [useNoBG, setUseNoBG] = useState<boolean>(false)
+    const [uploadedImg, setUploadedImg] = useState<string | null>(null)
+    const fileInputRef = useRef<HTMLInputElement | null>(null)
+
+    const handleImageClick = () => {
+        fileInputRef.current?.click();
+    }
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        const url = URL.createObjectURL(file);
+        setUploadedImg(url);
+    }
 
     function displayVariant(): string {
         if (useNoBG) return tempImageNoBG;
@@ -19,33 +33,73 @@ function App() {
       </header>
         <main className="content">
             <p>Click Image to Upload</p>
-            <div className="box image-box">
-                <img src={displayVariant()} alt="Image" className="preview-image"/>
+            <div className="box image-box upload-wrapper" onClick={handleImageClick}>
+                <img
+                    src={uploadedImg ?? displayVariant()}
+                    alt="Image"
+                    className="preview-image"
+                />
+
+                <div className="upload-overlay">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         className="lucide lucide-upload-icon lucide-upload">
+                        <path d="M12 3v12"/>
+                        <path d="m17 8-5-5-5 5"/>
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    </svg>
+                </div>
+
+                <input
+                    type="file"
+                    accept="image/*"
+                    style={{display: 'none'}}
+                    ref={fileInputRef}
+                    onChange={handleFileChange}
+                />
+
+
             </div>
 
-            <div className="box option-box">
-                <label>
-                    <input
-                        disabled={true}
-                        type="checkbox"/> Detailed
-                </label>
-            </div>
+            {uploadedImg ? (
+                <div className="box option-box split-box">
+                    <button className="split-left" onClick={() => setUploadedImg(null)}>
+                        X
+                    </button>
 
-            <div className="box option-box">
-                <label>
-                    <input
-                        onClick={() => setUseNoBG(!useNoBG)}
-                        type="checkbox"/> Background
-                </label>
-            </div>
+                    <button className="split-right" onClick={handleImageClick}>
+                        Convert
+                    </button>
+                </div>
+            ) : (
+                <>
+                    <div className="box option-box">
+                        <label>
+                            <input
+                                disabled={true}
+                                type="checkbox"/> Detailed
+                        </label>
+                    </div>
 
-            <div className="box option-box">
-                <label>
-                    <input
-                        disabled={true}
-                        type="checkbox"/> Effects
-                </label>
-            </div>
+                    <div className="box option-box">
+                        <label>
+                            <input
+                                onClick={() => setUseNoBG(!useNoBG)}
+                                type="checkbox"/> Background
+                        </label>
+                    </div>
+
+                    <div className="box option-box">
+                        <label>
+                            <input
+                                disabled={true}
+                                type="checkbox"/> Effects
+                        </label>
+                    </div>
+                </>
+            )}
+
+
 
         </main>
         <footer className="footer">
