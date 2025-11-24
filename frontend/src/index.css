@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
+
+:root {
+  font-family: 'Inconsolata', monospace;
+
+  background-color: #151516;
+  color: #eee;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.header {
+  padding: 1rem;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.footer {
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+.footer-link {
+  color: #aaaaaa;
+  text-decoration: none;
+}
+
+.footer-link:hover {
+  text-decoration: underline;
+}
+
+.footer-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.footer-menu li {
+  display: inline;
+}
+
+.footer-menu li + li::before {
+  content: "|";
+  padding: 0.5rem;
+  color: #aaaaaa;
+}
+
+.box {
+  border: 2px dashed lightgray;
+  padding: 1rem;
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
+}
+
+.box + .box {
+  border-top: none;
+}
+
+.option-box label {
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.option-box input {
+  margin: 0.5rem;
+}
+
+
+.image-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.preview-image {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+@media (max-width: 500px) {
+  .content {
+    padding: 1rem;
+  }
+
+
+}
