@@ -1,6 +1,7 @@
 import tempImageFull from './assets/full.png'
 import tempImageNoBG from './assets/no_bg.png'
 import {useRef, useState} from "react";
+import { resizeImage } from "./utils/resizeImage.ts";
 
 function App() {
 
@@ -12,12 +13,17 @@ function App() {
         fileInputRef.current?.click();
     }
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
 
+        const resizedBlob = await resizeImage(file)
+
         const url = URL.createObjectURL(file);
+        const resizedUrl = URL.createObjectURL(resizedBlob)
+
         setUploadedImg(url);
+
     }
 
     function displayVariant(): string {
