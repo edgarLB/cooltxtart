@@ -2,10 +2,15 @@ import math
 from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageChops
 import os
 
-BASE_DIR = os.path.dirname(__file__)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+ASSETS_DIR = os.path.join(BASE_DIR, '..', 'assets', 'fonts')
+TEMP_DIR = os.path.join(BASE_DIR, '..', 'temp')
+
+os.makedirs(TEMP_DIR, exist_ok=True)
 
 fontSize = 20
-fontPath = os.path.join(BASE_DIR, '../assets/fonts/consolas.ttf')
+fontPath = os.path.join(ASSETS_DIR, 'consolas.ttf')
 font = ImageFont.truetype(fontPath, fontSize)
 spacing_factor = 1.2
 
@@ -77,9 +82,11 @@ def make_images(img, ascii_text_full, ascii_text_no_bg, output_name):
     final_full = apply_glow(result_full, glow_full)
     final_no_bg = apply_glow(result_no_bg, glow_no_bg)
 
-    final_full_path = os.path.join(BASE_DIR, f'../temp/{output_name}_full.png')
-    final_no_bg_path = os.path.join(BASE_DIR, f'../temp/{output_name}_no_bg.png')
+    final_full_path = os.path.join(TEMP_DIR, f'{output_name}_full.png')
+    final_no_bg_path = os.path.join(TEMP_DIR, f'{output_name}_no_bg.png')
 
     final_full.save(final_full_path)
     final_no_bg.save(final_no_bg_path)
+
+    return final_full_path, final_no_bg_path
 
